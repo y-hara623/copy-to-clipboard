@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copy to Clipboard</title>
+<style>
+  body { font-family: -apple-system, sans-serif; margin: 0; padding: 24px; background: #f5f5f5; }
+  .container { max-width: 480px; margin: 0 auto; }
+  #text { width: 100%; min-height: 80px; padding: 12px; font-size: 14px; border: 1px solid #ccc; border-radius: 8px; word-break: break-all; background: #fff; box-sizing: border-box; }
+  button { width: 100%; margin-top: 12px; padding: 14px; font-size: 16px; font-weight: bold; color: #fff; background: #2962FF; border: none; border-radius: 8px; cursor: pointer; }
+  button:active { background: #1a44b0; }
+  .msg { text-align: center; margin-top: 12px; color: #43A047; font-weight: bold; display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <textarea id="text" readonly></textarea>
+  <button id="btn">Copy</button>
+  <div class="msg" id="msg">Copied!</div>
+</div>
+<script>
+  const params = new URLSearchParams(location.search);
+  const text = params.get('text') || '';
+  document.getElementById('text').value = text;
+  document.getElementById('btn').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      document.getElementById('text').select();
+      document.execCommand('copy');
+    }
+    document.getElementById('msg').style.display = 'block';
+  });
+</script>
+</body>
+</html>
